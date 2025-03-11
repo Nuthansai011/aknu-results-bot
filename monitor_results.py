@@ -68,13 +68,21 @@
 
 
 
-BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-CHAT_ID = "YOUR_CHAT_ID"
-MESSAGE = "Test message from GitHub Actions!"
+import requests
+import os
 
-url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-data = {"chat_id": CHAT_ID, "text": MESSAGE}
+# Get credentials from GitHub Secrets
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+TELEGRAM_API_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
-response = requests.post(url, data=data)
-print("Telegram Response:", response.json())  # Print response to debug
+def send_telegram_message(message):
+    """Send a test message to Telegram."""
+    data = {"chat_id": CHAT_ID, "text": message}
+    response = requests.post(TELEGRAM_API_URL, data=data)
+    print("Telegram Response:", response.json())  # Print response to debug
+
+if __name__ == "__main__":
+    send_telegram_message("Test message from GitHub Actions!")
+
 
